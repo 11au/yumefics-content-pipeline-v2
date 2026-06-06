@@ -1,0 +1,2 @@
+YUMEFICS_API_KEY = "0fb0f6a4bdeb02f95a0ebc30753288396523f8d66107cc59189c912e94463abb"
+COMFYUI_URL = "http://alpacas.hopto.org:8188/"
