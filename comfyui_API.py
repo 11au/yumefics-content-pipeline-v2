@@ -30,7 +30,7 @@ def poll_image_response(image_response):
         if "error" in image_response:
             return image_response
         else: 
-            status = requests.get(
+            image = requests.get(
                COMFYUI_URL+"/history/"+image_response
             )
-            return status
+            return image
