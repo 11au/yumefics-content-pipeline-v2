@@ -15,28 +15,58 @@ def filter_chapter(chapter: str):
         },
         json={
             "model": "openai/gpt-oss-120b: free",
-            "response_format": {
-                "type": "json_schema",
-                "json_schema": {
-                    "name": "chapter_extract",
-                    "schema": {
-                        "type": "object",
-                        "properties": {
-                            "subject": {"type": "string"},
-                            "action": {"type": "string"},
-                            "setting": {"type": "string"},
-                            "mood": {"type": "string"},
-                            "lighting": {"type": "string"},
-                            "composition": {"type": "string"}
-                        },
-                        "required": ["subject", "action", "setting", "mood", "lighting", "composition"]
-                    }
-                }
-            },
-            "messages": [
+            # "response_format": {
+            #     "type": "json_schema",
+            #     # "json_schema": {
+            #     #     "name": "chapter_extract",
+            #     #     "schema": {
+            #     #         "type": "object",
+            #     #         "properties": {
+            #     #             "subject": {"type": "string"},
+            #     #             "action": {"type": "string"},
+            #     #             "setting": {"type": "string"},
+            #     #             "mood": {"type": "string"},
+            #     #             "lighting": {"type": "string"},
+            #     #             "composition": {"type": "string"}
+            #     #         },
+            #     #         "required": ["subject", "action", "setting", "mood", "lighting", "composition"]
+            #     #     }
+            #     # }
+            # },
+           "messages": [
+                {
+                    "role": "system",
+                    "content": """You are an AI image prompt writer for the NewBie-image-Exp0.1 anime model.
+            Convert chapter text into a valid NewBie XML prompt using EXACTLY this tag structure:
+
+            <character_1>
+                <n>character name here</n>
+                <gender></gender>
+                <appearance></appearance>
+                <clothing></clothing>
+                <expression></expression>
+                <action></action>
+                <position></position>
+            </character_1>
+
+            <environment>
+                <scene></scene>
+                <lighting></lighting>
+                <mood></mood>
+                <composition></composition>
+            </environment>
+
+            Rules:
+            - Output XML only, no explanation, no markdown, no code blocks
+            - Use Danbooru tags inside each tag (e.g. long_hair, blue_eyes)
+            - Include the character's actual name in <n>
+            - Describe appearance and clothing in detail using tags
+            - Add or remove <character_N> blocks depending on how many characters are in the scene
+            - Pick ONE frozen visual moment for action, not a sequence"""
+                },
                 {
                     "role": "user",
-                    "content": f"Extract the following details from this chapter into JSON with fields: subject, action, setting, mood, lighting and composition. \n\n{chapter} "
+                    "content": f"Convert this chapter into a NewBie XML prompt:\n\n{chapter}"
                 }
             ]
         }
